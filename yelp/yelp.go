@@ -6,7 +6,7 @@ type Restaurant struct {
 	rating uint32
 }
 
-func results() []Restaurant {
+func Results() []Restaurant {
 	resp := make([]Restaurant, 3)
 	resp[0] = Restaurant{name: "Bob's Burgers", zip: "80304", rating: 3}
 	resp[1] = Restaurant{name: "Jane's Joint", zip: "80304", rating: 4}

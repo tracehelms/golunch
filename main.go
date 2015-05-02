@@ -8,6 +8,6 @@ import (
 )
 
 func main() {
-	restaurants := results()
+	restaurants := yelp.results()
 	fmt.Println("your restaurant is: ", restaurants[rand.Intn(3)])
 }
