@@ -1,4 +1,4 @@
-package main
+package yelp
 
 type Restaurant struct {
 	name   string

@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"math/rand"
+
+	"github.com/tracehelms/golunch/yelp"
 )
 
 func main() {
