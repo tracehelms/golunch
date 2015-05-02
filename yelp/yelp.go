@@ -9,6 +9,8 @@ import (
 	"github.com/mrjones/oauth"
 )
 
+const url string = "http://api.yelp.com/v2/search"
+
 type Credentials struct {
 	ConsumerKey       string // Consumer Key from the yelp API access site.
 	ConsumerSecret    string // Consumer Secret from the yelp API access site.
@@ -21,7 +23,25 @@ type Client struct {
 	Client  *http.Client
 }
 
-func (client *Client) Search(query string) *http.Response {
+func (client *Client) Search(query string) []byte {
+	params := map[string]string{
+		"term":     query,
+		"location": "80304",
+		"limit":    "1",
+	}
+
+	resp := MakeRequest(client, params)
+
+	defer resp.Body.Close()
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		panic(err)
+	}
+
+	return body
+}
+
+func MakeRequest(client *Client, params map[string]string) *http.Response {
 	c := oauth.NewCustomHttpClientConsumer(
 		client.Options.ConsumerKey,
 		client.Options.ConsumerSecret,
@@ -39,9 +59,10 @@ func (client *Client) Search(query string) *http.Response {
 		make(map[string]string),
 	}
 
-	params := make(map[string]string)
-
-	resp, err := c.Get(query, params, token)
+	resp, err := c.Get(url, params, token)
+	if err != nil {
+		panic(err)
+	}
 	return resp
 }
 
