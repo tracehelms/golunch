@@ -2,22 +2,22 @@ package yelp
 
 import (
 	"encoding/json"
-	"io/ioutil"
+	// "io/ioutil"
 	"strconv"
 )
 
-type Restaurant struct {
-	name    string `json: "name"`
-	rating  uint32 `json: "rating"`
-	url     string `json: "url"`
-	address string `json: "display_address"`
+type Business struct {
+	Name    string  `json:"name"`
+	Rating  float32 `json:"rating"`
+	Url     string  `json:"url"`
+	Address string  `json:"display_address"`
 }
 
-type Restaurants struct {
-	businesses []Restaurant `json: "businesses"`
+type SearchResult struct {
+	Businesses []Business `json:"businesses"`
 }
 
-func (client *Client) Search(query string, location string, limit int) Restaurants {
+func (client *Client) Search(query string, location string, limit int) SearchResult {
 	params := map[string]string{
 		"term":     query,
 		"location": location,
@@ -27,13 +27,8 @@ func (client *Client) Search(query string, location string, limit int) Restauran
 	resp := MakeRequest(client, params)
 
 	defer resp.Body.Close()
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		panic(err)
-	}
-
-	var r Restaurants
-	err = json.Unmarshal(body, &r)
+	var r SearchResult
+	err := json.NewDecoder(resp.Body).Decode(&r)
 	if err != nil {
 		panic(err)
 	}
