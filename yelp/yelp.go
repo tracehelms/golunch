@@ -1,33 +1,27 @@
-// credit for authentication goes to https://github.com/JustinBeckwith/go-yelp
 package yelp
 
 import (
 	"encoding/json"
 	"io/ioutil"
-	"net/http"
-
-	"github.com/mrjones/oauth"
+	"strconv"
 )
 
-const url string = "http://api.yelp.com/v2/search"
-
-type Credentials struct {
-	ConsumerKey       string // Consumer Key from the yelp API access site.
-	ConsumerSecret    string // Consumer Secret from the yelp API access site.
-	AccessToken       string // Token from the yelp API access site.
-	AccessTokenSecret string // Token Secret from the yelp API access site.
+type Restaurant struct {
+	name    string `json: "name"`
+	rating  uint32 `json: "rating"`
+	url     string `json: "url"`
+	address string `json: "display_address"`
 }
 
-type Client struct {
-	Options *Credentials
-	Client  *http.Client
+type Restaurants struct {
+	businesses []Restaurant `json: "businesses"`
 }
 
-func (client *Client) Search(query string) []byte {
+func (client *Client) Search(query string, location string, limit int) Restaurants {
 	params := map[string]string{
 		"term":     query,
-		"location": "80304",
-		"limit":    "1",
+		"location": location,
+		"limit":    strconv.Itoa(limit),
 	}
 
 	resp := MakeRequest(client, params)
@@ -38,46 +32,11 @@ func (client *Client) Search(query string) []byte {
 		panic(err)
 	}
 
-	return body
-}
-
-func MakeRequest(client *Client, params map[string]string) *http.Response {
-	c := oauth.NewCustomHttpClientConsumer(
-		client.Options.ConsumerKey,
-		client.Options.ConsumerSecret,
-		oauth.ServiceProvider{
-			RequestTokenUrl:   "",
-			AuthorizeTokenUrl: "",
-			AccessTokenUrl:    "",
-		},
-		client.Client,
-	)
-
-	token := &oauth.AccessToken{
-		client.Options.AccessToken,
-		client.Options.AccessTokenSecret,
-		make(map[string]string),
-	}
-
-	resp, err := c.Get(url, params, token)
+	var r Restaurants
+	err = json.Unmarshal(body, &r)
 	if err != nil {
 		panic(err)
 	}
-	return resp
-}
 
-func New() *Client {
-	var creds Credentials
-	data, err := ioutil.ReadFile("../keys.json")
-	if err != nil {
-		panic(err)
-	}
-	err = json.Unmarshal(data, &creds)
-	if err != nil {
-		panic(err)
-	}
-	return &Client{
-		Client:  http.DefaultClient,
-		Options: &creds, // comma, wtf?!
-	}
+	return r
 }
