@@ -2,7 +2,6 @@ package yelp
 
 import (
 	"encoding/json"
-	// "io/ioutil"
 	"strconv"
 )
 
