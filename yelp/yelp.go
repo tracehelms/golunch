@@ -2,7 +2,6 @@ package yelp
 
 import (
 	"encoding/json"
-	"strconv"
 )
 
 type Business struct {
@@ -20,11 +19,11 @@ type SearchResult struct {
 	Businesses []Business `json:"businesses"`
 }
 
-func (client *Client) Search(query string, location string, limit int) SearchResult {
+func (client *Client) Search(query string, location string) SearchResult {
 	params := map[string]string{
 		"term":     query,
 		"location": location,
-		"limit":    strconv.Itoa(limit),
+		"limit":    "20",
 	}
 
 	resp := MakeRequest(client, params)

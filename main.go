@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"math/rand"
 	"time"
@@ -9,8 +10,17 @@ import (
 )
 
 func main() {
-	results := yelp.New().Search("hamburger", "80304", 10)
+	location := flag.String("location", "80304", "the location you want to search in")
+	flag.Parse()
+
+	query := flag.Args()[0]
+
+	results := yelp.New().Search(query, *location)
 	count := len(results.Businesses)
+	if count <= 0 {
+		fmt.Println("No results were found!")
+		return
+	}
 	r := rand.New(rand.NewSource(time.Now().UnixNano()))
 	randNumber := r.Intn(count)
 
