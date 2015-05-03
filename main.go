@@ -13,5 +13,14 @@ func main() {
 	count := len(results.Businesses)
 	r := rand.New(rand.NewSource(time.Now().UnixNano()))
 	randNumber := r.Intn(count)
-	fmt.Println(results.Businesses[randNumber])
+
+	printResult(results.Businesses[randNumber])
+}
+
+func printResult(business yelp.Business) {
+	fmt.Println("Time for grub! Your destination:")
+	fmt.Println("Name:     ", business.Name)
+	fmt.Println("Rating:   ", business.Rating)
+	fmt.Println("Location: ", business.Location.Address)
+	fmt.Println("URL:      ", business.Url)
 }
