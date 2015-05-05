@@ -46,3 +46,10 @@ Rating:    4.5
 Location:  [1121 Broadway Ste 103 Boulder, CO 80302]
 URL:       http://www.yelp.com/biz/terra-thai-boulder
 ```
+
+## Notes
+### Presentation
+I gave a talk about this at the [Boulder Gophers Meetup](http://www.meetup.com/Boulder-Gophers). The slides can be found [here](http://tracehelms.com/talk_consuming_apis_with_go).
+
+### Sources
+- https://github.com/JustinBeckwith/go-yelp
