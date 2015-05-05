@@ -5,7 +5,7 @@ Not feeling like deciding where to eat? Let a random lunch picker do it for you!
 `go get github.com/tracehelms/golunch`
 `go install`
 
-You will need to get API keys from [Yelp](https://www.yelp.com/developers). Once you have them, create a file in the project directory `$GOPATH/src/github.com/tracehelms/golunch` called `keys.json`. Structure it like this:
+You will need to get API keys from [Yelp](https://www.yelp.com/developers). Once you have them, create a file called `yelp_keys.json`. Structure it like this:
 
 ```
 {
@@ -17,6 +17,9 @@ You will need to get API keys from [Yelp](https://www.yelp.com/developers). Once
 ```
 
 And fill in the values with your API keys from Yelp.
+
+### Known Issue
+You will have to have this file in whatever directory you want to run the command in. If you want to run it from your home directory, make this file in the `~/` directory. I'm still working out how to let this be set in one place and have the command work from anywhere.
 
 
 ## Usage
