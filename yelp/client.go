@@ -50,7 +50,7 @@ func MakeRequest(client *Client, params map[string]string) *http.Response {
 
 func New() *Client {
 	var creds Credentials
-	data, err := ioutil.ReadFile("keys.json")
+	data, err := ioutil.ReadFile("yelp_keys.json")
 	if err != nil {
 		panic(err)
 	}
