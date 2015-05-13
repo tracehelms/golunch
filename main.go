@@ -1,36 +1,53 @@
 package main
 
 import (
-	"flag"
-	"fmt"
+	"encoding/json"
+	"log"
 	"math/rand"
+	"net/http"
 	"time"
 
+	"github.com/gorilla/mux"
 	"github.com/tracehelms/golunch/yelp"
 )
 
 func main() {
-	location := flag.String("location", "80304", "the location you want to search in")
-	flag.Parse()
+	r := mux.NewRouter()
+	r.HandleFunc("/api/search", SearchHandler).Methods("GET")
+	http.Handle("/api/", r)
+	http.Handle("/", http.FileServer(http.Dir("./public/")))
 
-	query := flag.Args()[0]
+	log.Println("Server listening on port 8080...")
+	http.ListenAndServe(":8080", nil)
+}
 
-	results := yelp.New().Search(query, *location)
+func SearchHandler(w http.ResponseWriter, r *http.Request) {
+	defer LogTime(time.Now())
+	w.Header().Set("Content-Type", "application/json")
+
+	query := r.URL.Query().Get("query")
+	location := r.URL.Query().Get("location")
+	if location == "" {
+		location = "80304"
+	}
+	b := GetRandomBusiness(query, location)
+
+	jsonResp, _ := json.Marshal(b)
+	w.Write(jsonResp)
+}
+
+func GetRandomBusiness(query string, location string) yelp.Business {
+	results := yelp.New().Search(query, location)
 	count := len(results.Businesses)
 	if count <= 0 {
-		fmt.Println("No results were found!")
-		return
+		return yelp.Business{}
 	}
 	r := rand.New(rand.NewSource(time.Now().UnixNano()))
 	randNumber := r.Intn(count)
-
-	printResult(results.Businesses[randNumber])
+	return results.Businesses[randNumber]
 }
 
-func printResult(business yelp.Business) {
-	fmt.Println("Time for grub! Your destination:")
-	fmt.Println("Name:     ", business.Name)
-	fmt.Println("Rating:   ", business.Rating)
-	fmt.Println("Location: ", business.Location.Address)
-	fmt.Println("URL:      ", business.Url)
+func LogTime(t time.Time) {
+	elapsed := time.Since(t)
+	log.Println("Response time: ", elapsed)
 }
