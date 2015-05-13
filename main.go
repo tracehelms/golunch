@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"errors"
 	"log"
 	"math/rand"
 	"net/http"
@@ -11,7 +12,15 @@ import (
 	"github.com/tracehelms/golunch/yelp"
 )
 
+type InputQuery struct {
+	Query    string
+	Location string
+}
+
+var cachedResults map[InputQuery]yelp.SearchResult
+
 func main() {
+	cachedResults = make(map[InputQuery]yelp.SearchResult)
 	r := mux.NewRouter()
 	r.HandleFunc("/api/search", SearchHandler).Methods("GET")
 	http.Handle("/api/", r)
@@ -37,7 +46,11 @@ func SearchHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetRandomBusiness(query string, location string) yelp.Business {
-	results := yelp.New().Search(query, location)
+	results, err := SearchInCache(query, location)
+	if err != nil {
+		results = yelp.New().Search(query, location)
+		AddToCache(query, location, results)
+	}
 	count := len(results.Businesses)
 	if count <= 0 {
 		return yelp.Business{}
@@ -50,4 +63,22 @@ func GetRandomBusiness(query string, location string) yelp.Business {
 func LogTime(t time.Time) {
 	elapsed := time.Since(t)
 	log.Println("Response time: ", elapsed)
+}
+
+func AddToCache(query string, location string, results yelp.SearchResult) {
+	input := InputQuery{Query: query, Location: location}
+	cachedResults[input] = results
+	log.Println("Added result set to cache...")
+	log.Println("query: ", query)
+	log.Println("location: ", location)
+}
+
+func SearchInCache(query string, location string) (yelp.SearchResult, error) {
+	input := InputQuery{Query: query, Location: location}
+	val, ok := cachedResults[input]
+	if ok {
+		return val, nil
+	}
+	return yelp.SearchResult{}, errors.New("not found in cache")
+
 }
