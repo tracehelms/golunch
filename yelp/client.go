@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"net/http"
+	"os"
 
 	"github.com/mrjones/oauth"
 )
@@ -49,6 +50,22 @@ func MakeRequest(client *Client, params map[string]string) *http.Response {
 }
 
 func New() *Client {
+	consumerKey := os.Getenv("ConsumerKey")
+	consumerSecret := os.Getenv("ConsumerSecret")
+	accessToken := os.Getenv("AccessToken")
+	accessTokenSecret := os.Getenv("AccessTokenSecret")
+	if consumerKey != "" && consumerSecret != "" && accessToken != "" && accessTokenSecret != "" {
+		return &Client{
+			Client: http.DefaultClient,
+			Options: &Credentials{
+				ConsumerKey:       consumerKey,
+				ConsumerSecret:    consumerSecret,
+				AccessToken:       accessToken,
+				AccessTokenSecret: accessTokenSecret,
+			},
+		}
+	}
+
 	var creds Credentials
 	data, err := ioutil.ReadFile("yelp_keys.json")
 	if err != nil {
