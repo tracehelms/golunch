@@ -6,6 +6,7 @@ import (
 	"log"
 	"math/rand"
 	"net/http"
+	"os"
 	"time"
 
 	"github.com/codegangsta/negroni"
@@ -21,12 +22,16 @@ var cachedResults map[InputQuery]yelp.SearchResult
 
 func main() {
 	cachedResults = make(map[InputQuery]yelp.SearchResult)
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", SearchHandler)
 
 	n := negroni.Classic()
 	n.UseHandler(mux)
-	n.Run(":8080")
+	n.Run(":" + port)
 }
 
 func SearchHandler(w http.ResponseWriter, r *http.Request) {
