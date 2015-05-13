@@ -1,14 +1,14 @@
 package main
 
 import (
-	"encoding/json"
 	"errors"
+	"html/template"
 	"log"
 	"math/rand"
 	"net/http"
 	"time"
 
-	"github.com/gorilla/mux"
+	"github.com/codegangsta/negroni"
 	"github.com/tracehelms/golunch/yelp"
 )
 
@@ -21,18 +21,22 @@ var cachedResults map[InputQuery]yelp.SearchResult
 
 func main() {
 	cachedResults = make(map[InputQuery]yelp.SearchResult)
-	r := mux.NewRouter()
-	r.HandleFunc("/api/search", SearchHandler).Methods("GET")
-	http.Handle("/api/", r)
-	http.Handle("/", http.FileServer(http.Dir("./public/")))
+	mux := http.NewServeMux()
+	mux.HandleFunc("/", SearchHandler)
 
-	log.Println("Server listening on port 8080...")
-	http.ListenAndServe(":8080", nil)
+	n := negroni.Classic()
+	n.UseHandler(mux)
+	n.Run(":8080")
 }
 
 func SearchHandler(w http.ResponseWriter, r *http.Request) {
 	defer LogTime(time.Now())
-	w.Header().Set("Content-Type", "application/json")
+	log.Println("In searchhandler")
+	tmpl, err := template.ParseFiles("./views/index.html")
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
 
 	query := r.URL.Query().Get("query")
 	location := r.URL.Query().Get("location")
@@ -41,8 +45,10 @@ func SearchHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	b := GetRandomBusiness(query, location)
 
-	jsonResp, _ := json.Marshal(b)
-	w.Write(jsonResp)
+	err = tmpl.Execute(w, b)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
 }
 
 func GetRandomBusiness(query string, location string) yelp.Business {
@@ -68,9 +74,7 @@ func LogTime(t time.Time) {
 func AddToCache(query string, location string, results yelp.SearchResult) {
 	input := InputQuery{Query: query, Location: location}
 	cachedResults[input] = results
-	log.Println("Added result set to cache...")
-	log.Println("query: ", query)
-	log.Println("location: ", location)
+	log.Printf("Added result set for (query: %s, location: %s) to cache.", query, location)
 }
 
 func SearchInCache(query string, location string) (yelp.SearchResult, error) {

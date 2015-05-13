@@ -1,0 +1,32 @@
+<html>
+<head>
+</head>
+
+<body>
+  <header>
+    <h1>Gruuub!</h1>
+  </header>
+
+  <div class="result">
+    <h2><a href="{{ .Url }}" target="_blank">{{ .Name }}</a></h2>
+    <p>Rating: {{ .Rating }}</p>
+    <p>Address: {{ .Location }}</p>
+  </div>
+  <div class="help">
+    <h2>Usage</h2>
+    <p>Optionally set the query parameters `query` and / or `location` in the URL. Providing a query gives better results.</p>
+    <p>Default location is 80304.</p>
+    <p>Refresh to get a new result.</p>
+    <h3>Examples</h3>
+    <ul>
+      <li><a href="http://localhost:8080">http://localhost:8080</a></li>
+      <li><a href="http://localhost:8080/?query=thai">http://localhost:8080/?query=thai</a></li>
+      <li><a href="http://localhost:8080/?query=mexican&location=80301">http://localhost:8080/?query=mexican&location=80301</a></li>
+    </ul>
+  </div>
+
+  <footer>
+    <p>Powered by <a href="https://yelp.com"><img src="images/yelp.png"/></a></p>
+  </footer>
+</body>
+</html>
