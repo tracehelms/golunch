@@ -1,32 +1,64 @@
 <html>
 <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+  <title>gruuub</title>
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
 </head>
 
 <body>
-  <header>
-    <h1>Gruuub!</h1>
-  </header>
-
-  <div class="result">
-    <h2><a href="{{ .Url }}" target="_blank">{{ .Name }}</a></h2>
-    <p>Rating: {{ .Rating }}</p>
-    <p>Address: {{ .Location }}</p>
+  <div class="jumbotron">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6">
+          <h1>Gruuub!</h1>
+          <p>Making choosing a place to eat dead simple.</p>
+        </div>
+        <div class="col-md-6">
+          <a href="." class="btn btn-primary btn-lg center" style="margin-top: 50px;">Let's gruuub!</a>
+        </div>
+      </div>
+    </div>
   </div>
-  <div class="help">
-    <h2>Usage</h2>
-    <p>Optionally set the query parameters `query` and / or `location` in the URL. Providing a query gives better results.</p>
-    <p>Default location is 80304.</p>
-    <p>Refresh to get a new result.</p>
-    <h3>Examples</h3>
-    <ul>
-      <li><a href="/">http://gruuub.com</a></li>
-      <li><a href="/?query=thai">http://gruuub.com/?query=thai</a></li>
-      <li><a href="/?query=mexican&location=80301">http://gruuub.com/?query=mexican&location=80301</a></li>
-    </ul>
+
+  <div class="container">
+    <div class="result">
+      <h2><a href="{{ .Url }}" target="_blank">{{ .Name }}</a></h2>
+      <p>Rating: {{ .Rating }}</p>
+      <p>Address: {{ .Location }}</p>
+    </div>
+    <div class="help">
+      <h2>Usage</h2>
+      <p>Optionally set the query parameters `query` and / or `location` in the URL. Providing a query gives better results.</p>
+      <p>Default location is 80304.</p>
+      <p>Refresh to get a new result.</p>
+      <h3>Examples</h3>
+      <ul>
+        <li><a href="/">http://gruuub.com</a></li>
+        <li><a href="/?query=thai">http://gruuub.com/?query=thai</a></li>
+        <li><a href="/?query=mexican&location=80301">http://gruuub.com/?query=mexican&location=80301</a></li>
+      </ul>
+    </div>
   </div>
 
   <footer>
-    <p>Powered by <a href="https://yelp.com"><img src="images/yelp.png"/></a></p>
+    <div class="container">
+      <hr>
+      <p>Powered by <a href="https://yelp.com"><img src="images/yelp.png"/></a></p>
+    </div>
   </footer>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 </body>
 </html>
