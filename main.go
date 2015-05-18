@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"github.com/codegangsta/negroni"
+	"github.com/jingweno/negroni-gorelic"
 	"github.com/tracehelms/golunch/yelp"
 )
 
@@ -31,6 +32,13 @@ func main() {
 
 	n := negroni.Classic()
 	n.UseHandler(mux)
+
+	// Configure New Relic if license key available
+	newRelicLicenseKey := os.Getenv("NewRelicLicenseKey")
+	if newRelicLicenseKey != "" {
+		n.Use(negronigorelic.New(newRelicLicenseKey, "gruuub", true))
+	}
+
 	n.Run(":" + port)
 }
 
