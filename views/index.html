@@ -9,6 +9,29 @@
 
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
 
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+  <script>
+    $(document).ready( function() {
+      var hash = {};
+      var q = document.URL.split('?')[1];
+      if(q != undefined){
+        q = q.split('&');
+        for(var i = 0; i < q.length; i++){
+          term_arr = q[i].split('=');
+          hash[term_arr[0]] = term_arr[1];
+        }
+      }
+
+      if (hash["query"] != undefined && hash["query"] != "") {
+        $("#query").val(hash["query"]);
+      }
+      if (hash["location"] != undefined && hash["location"] != "") {
+        $("#location").val(hash["location"]);
+      }
+    });
+  </script>
+
   <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
   <!--[if lt IE 9]>
@@ -25,40 +48,49 @@
           <h1>Gruuub!</h1>
           <p>Making choosing a place to eat dead simple.</p>
         </div>
-        <div class="col-md-6">
-          <a href="." class="btn btn-primary btn-lg center" style="margin-top: 50px;">Let's gruuub!</a>
-        </div>
       </div>
     </div>
   </div>
 
   <div class="container">
-    <div class="result">
-      <h2><a href="{{ .Url }}" target="_blank">{{ .Name }}</a></h2>
-      <p>Rating: {{ .Rating }}</p>
-      <p>Address: {{ .Location }}</p>
-    </div>
-    <div class="help">
-      <h2>Usage</h2>
-      <p>Optionally set the query parameters `query` and / or `location` in the URL. Providing a query gives better results.</p>
-      <p>Default location is 80304.</p>
-      <p>Refresh to get a new result.</p>
-      <h3>Examples</h3>
-      <ul>
-        <li><a href="/">http://gruuub.com</a></li>
-        <li><a href="/?query=thai">http://gruuub.com/?query=thai</a></li>
-        <li><a href="/?query=mexican&location=80301">http://gruuub.com/?query=mexican&location=80301</a></li>
-      </ul>
+    <div class="row">
+      <div class="col-md-6">
+        <form action="/" method="get">
+          <div class="row">
+            <div class="col-md-2">
+              <label for="query">Query</label>
+            </div>
+            <div class="col-md-3">
+              <input name="query" id="query">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-2">
+              <label for="location">Location</label>
+            </div>
+            <div class="col-md-3">
+              <input name="location" value="80304" id="location">
+            </div>
+          </div>
+
+          <input type="submit" class="btn btn-primary btn-lg center" value="Let's gruuub!" style="margin-top: 20px;"></input>
+        </form>
+      </div>
+
+      <div class="col-md-6">
+        <h2>Your Result</h2>
+        <h3><a href="{{ .Url }}" target="_blank">{{ .Name }}</a></h3>
+        <p>Rating: {{ .Rating }}</p>
+        <p>Address: {{ .Location }}</p>
+      </div>
     </div>
   </div>
 
   <footer>
     <div class="container">
       <hr>
-      <p>Powered by <a href="https://yelp.com"><img src="images/yelp.png"/></a></p>
+      <p class="pull-right">Powered by <a href="https://yelp.com"><img src="images/yelp.png"/></a></p>
     </div>
   </footer>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 </body>
 </html>
