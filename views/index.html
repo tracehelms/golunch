@@ -60,7 +60,7 @@
         <form action="/" method="get" class="search-form">
           <div class="row">
             <div class="col-sm-2">
-              <label for="query">Query</label>
+              <label for="query">Keyword</label>
             </div>
             <div class="col-sm-3">
               <input name="query" id="query">
@@ -82,14 +82,15 @@
       <div class="col-sm-6">
         <h2>Your Result</h2>
         <h3><a href="{{ .Url }}" target="_blank">{{ .Name }}</a></h3>
-        <p>Rating: {{ .Rating }}</p>
-        <p>Address: {{ .PrettyLocation }}</p>
+        <p><strong>Rating:</strong> {{ .Rating }}</p>
+        <p><strong>Address:</strong> {{ .PrettyLocation }}</p>
       </div>
     </div>
   </div>
 
   <footer class="footer">
     <div class="container">
+      <p class="pull-left created-by">Created by <a href="http://tracehelms.com">Trace Helms</a></p>
       <p class="pull-right yelp-credits">Powered by <a href="https://yelp.com"><img src="images/yelp.png"/></a></p>
     </div>
   </footer>
