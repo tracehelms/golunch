@@ -38,3 +38,11 @@ func (client *Client) Search(query string, location string) SearchResult {
 
 	return r
 }
+
+func (location *Location) Pretty() string {
+	var s string
+	for _, val := range location.Address {
+		s += val + " "
+	}
+	return s
+}
