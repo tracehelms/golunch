@@ -39,9 +39,9 @@ func (client *Client) Search(query string, location string) SearchResult {
 	return r
 }
 
-func (location *Location) Pretty() string {
+func (business Business) PrettyLocation() string {
 	var s string
-	for _, val := range location.Address {
+	for _, val := range business.Location.Address {
 		s += val + " "
 	}
 	return s

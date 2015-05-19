@@ -8,6 +8,7 @@
   <title>gruuub</title>
 
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/stylesheets/main.css">
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
@@ -54,42 +55,42 @@
 
   <div class="container">
     <div class="row">
-      <div class="col-md-6">
-        <form action="/" method="get">
+      <div class="col-sm-6">
+        <h2>Search</h2>
+        <form action="/" method="get" class="search-form">
           <div class="row">
-            <div class="col-md-2">
+            <div class="col-sm-2">
               <label for="query">Query</label>
             </div>
-            <div class="col-md-3">
+            <div class="col-sm-3">
               <input name="query" id="query">
             </div>
           </div>
           <div class="row">
-            <div class="col-md-2">
+            <div class="col-sm-2">
               <label for="location">Location</label>
             </div>
-            <div class="col-md-3">
+            <div class="col-sm-3">
               <input name="location" value="80304" id="location">
             </div>
           </div>
 
-          <input type="submit" class="btn btn-primary btn-lg center" value="Let's gruuub!" style="margin-top: 20px;"></input>
+          <input type="submit" class="btn btn-primary btn-lg center submit-button" value="Let's gruuub!" style=""></input>
         </form>
       </div>
 
-      <div class="col-md-6">
+      <div class="col-sm-6">
         <h2>Your Result</h2>
         <h3><a href="{{ .Url }}" target="_blank">{{ .Name }}</a></h3>
         <p>Rating: {{ .Rating }}</p>
-        <p>Address: {{ .Location }}</p>
+        <p>Address: {{ .PrettyLocation }}</p>
       </div>
     </div>
   </div>
 
-  <footer>
+  <footer class="footer">
     <div class="container">
-      <hr>
-      <p class="pull-right">Powered by <a href="https://yelp.com"><img src="images/yelp.png"/></a></p>
+      <p class="pull-right yelp-credits">Powered by <a href="https://yelp.com"><img src="images/yelp.png"/></a></p>
     </div>
   </footer>
 </body>
