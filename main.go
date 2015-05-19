@@ -11,7 +11,7 @@ import (
 
 	"github.com/codegangsta/negroni"
 	"github.com/jingweno/negroni-gorelic"
-	"github.com/tracehelms/golunch/yelp"
+	"github.com/tracehelms/gruuub/yelp"
 )
 
 type InputQuery struct {
