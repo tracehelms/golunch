@@ -1,6 +1,8 @@
 # GRUUUB!
 Not feeling like deciding where to eat? Let gruuub do it for you! This is a tool that, given a keyword and location, uses Yelp's API to search for nearby restaurants and picks a random one.
 
+Find it live at http://www.gruuub.com.
+
 
 ## Contributing
 ### Installation
